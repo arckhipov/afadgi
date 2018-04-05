@@ -59,7 +59,11 @@ $bIsMainPage = $APPLICATION->GetCurPage(false)  == SITE_DIR;
                         <div class="row">
                             <div class="col-lg-7 col-xs-12 hidden-xs">
                                 <ul class="btn-list-inline">
-                                    Самый лучший производитель одежды
+                                    <?$APPLICATION->IncludeFile(
+                                        SITE_DIR."include/slogan.php",
+                                        array(),
+                                        array("MODE"=>"text")
+                                    );?>
                                 </ul>
                             </div>
                             <div class="col-lg-5 col-xs-12 hidden-print">
@@ -72,40 +76,41 @@ $bIsMainPage = $APPLICATION->GetCurPage(false)  == SITE_DIR;
                     </div>
                     <div class="col-md-3 col-sm-6 col-xs-12">
                         <ul class="phone-list">
-                            <li><i>+7 (495)</i> <b>000-00-00</b></li>
-                            <li><i>+7 (8442)</i> <b>00-00-00</b></li>
+                            <li><?$APPLICATION->IncludeFile(
+                                    SITE_DIR."include/phone1.php",
+                                    array(),
+                                    array("MODE"=>"html")
+                                );?></li>
+                            <li><?$APPLICATION->IncludeFile(
+                                    SITE_DIR."include/phone2.php",
+                                    array(),
+                                    array("MODE"=>"html")
+                                );?></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-    <nav>
-        <div class="navbar navbar-intervolga">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#top-nav">
-                        <span class="sr-only">Переключить навигацию</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="/">InterVolga.ru</a>
-                </div>
-                <div class="collapse navbar-collapse" id="top-nav">
-                    <ul class="nav navbar-nav">
-                        <li><a href="/">Главная страница</a></li>
-                        <li><a href="#">Каталог товаров</a></li>
-                        <li><a href="#">Новости компании</a></li>
-                        <li><a href="#">Гарантия</a></li>
-                        <li><a href="#">Доставка</a></li>
-                        <li><a href="#">Дилерам</a></li>
-                        <li><a href="#">Контакты</a></li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <?$APPLICATION->IncludeComponent(
+	"bitrix:menu", 
+	"menu", 
+	array(
+		"ALLOW_MULTI_SELECT" => "N",
+		"CHILD_MENU_TYPE" => "left",
+		"DELAY" => "N",
+		"MAX_LEVEL" => "1",
+		"MENU_CACHE_GET_VARS" => array(
+		),
+		"MENU_CACHE_TIME" => "3600",
+		"MENU_CACHE_TYPE" => "N",
+		"MENU_CACHE_USE_GROUPS" => "Y",
+		"ROOT_MENU_TYPE" => "top",
+		"USE_EXT" => "N",
+		"COMPONENT_TEMPLATE" => "menu"
+	),
+	false
+);?>
     <?if ($bIsMainPage):?>
         <div class="slider-responsive">
             <div class="slider-responsive-panel">
@@ -289,11 +294,14 @@ $bIsMainPage = $APPLICATION->GetCurPage(false)  == SITE_DIR;
 
     <div class="container">
         <?if (!$bIsMainPage):?>
-        <ol class="breadcrumb">
-            <li><a href="#">Главная</a></li>
-            <li><a href="#">Раздел</a></li>
-            <li class="active">Детальная страница</li>
-        </ol>
+            <?$APPLICATION->IncludeComponent("bitrix:breadcrumb", "stati", Array(
+	"COMPONENT_TEMPLATE" => ".default",
+		"PATH" => "",	// Путь, для которого будет построена навигационная цепочка (по умолчанию, текущий путь)
+		"SITE_ID" => "-",	// Cайт (устанавливается в случае многосайтовой версии, когда DOCUMENT_ROOT у сайтов разный)
+		"START_FROM" => "0",	// Номер пункта, начиная с которого будет построена навигационная цепочка
+	),
+	false
+);?>
         <?endif;?>
         <h1><?$APPLICATION->ShowTitle(false);?></h1>
     </div>
